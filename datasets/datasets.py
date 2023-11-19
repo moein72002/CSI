@@ -12,6 +12,7 @@ IMAGENET_PATH = '~/data/ImageNet'
 
 
 CIFAR10_SUPERCLASS = list(range(10))  # one class
+STL10_SUPERCLASS = list(range(10))  # one class
 IMAGENET_SUPERCLASS = list(range(30))  # one class
 
 CIFAR100_SUPERCLASS = [
@@ -122,7 +123,7 @@ def get_transform_imagenet():
     return train_transform, test_transform
 
 
-def get_dataset(P, dataset, test_only=False, image_size=None, download=False, eval=False):
+def get_dataset(P, dataset, test_only=False, image_size=None, download=True, eval=False):
     if dataset in ['imagenet', 'cub', 'stanford_dogs', 'flowers102',
                    'places365', 'food_101', 'caltech_256', 'dtd', 'pets']:
         if eval:
@@ -144,6 +145,12 @@ def get_dataset(P, dataset, test_only=False, image_size=None, download=False, ev
         n_classes = 100
         train_set = datasets.CIFAR100(DATA_PATH, train=True, download=download, transform=train_transform)
         test_set = datasets.CIFAR100(DATA_PATH, train=False, download=download, transform=test_transform)
+
+    elif dataset == 'stl10':
+        image_size = (96, 96, 3)
+        n_classes = 10
+        train_set = datasets.STL10(DATA_PATH, split='train', download=download, transform=train_transform)
+        test_set = datasets.STL10(DATA_PATH, split='test', download=download, transform=test_transform)
 
     elif dataset == 'svhn':
         assert test_only and image_size is not None
@@ -239,6 +246,8 @@ def get_superclass_list(dataset):
         return CIFAR10_SUPERCLASS
     elif dataset == 'cifar100':
         return CIFAR100_SUPERCLASS
+    elif dataset == 'stl10':
+        return STL10_SUPERCLASS
     elif dataset == 'imagenet':
         return IMAGENET_SUPERCLASS
     else:

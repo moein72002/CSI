@@ -157,7 +157,7 @@ def compute_ood_score(P, model, ood_score, x, simclr_aug=None):
         return score
 
     elif ood_score == 'similar':
-        assert simclr_aug is not None  # require custom simclr augmentation
+        assert simclr_aug is not None  #  custom simclr augmentation
         sample_num = 2  # fast evaluation
         feats = get_features(model, simclr_aug, x, layer=P.ood_layer, sample_num=sample_num)
         feats_avg = sum(feats) / len(feats)
